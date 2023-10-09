@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\V1\PostController;
+use App\Http\Controllers\Api\V1\PostController as PostControllerV1;
+use App\Http\Controllers\Api\V2\PostController as PostControllerV2;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,4 +9,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::apiResource('v1/posts', PostController::class)->only(['index', 'show', 'destroy']);
+Route::prefix('v1')->group(function () {
+    Route::apiResource('posts', PostControllerV1::class)->only(['index', 'show', 'destroy']);
+});
+
+Route::prefix('v2')->group(function () {
+    Route::apiResource('posts', PostControllerV2::class)->only(['index', 'show']);
+});
